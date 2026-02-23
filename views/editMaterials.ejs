@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Material</title>
+  </head>
+  <body>
+    <h1>Edit Material</h1>
+
+    <%- include("header") %>
+
+    <form
+      action="/courses/<%= data.CourseId %>/materials/<%= data.id %>/edit"
+      method="post"
+    >
+      <label>Material Name</label>
+      <input type="text" name="name" value="<%= data.name %>" />
+
+      <label>fileUrl</label>
+      <input type="text" name="fileUrl" value="<%= data.fileUrl %>" />
+
+      <button type="submit">Save</button>
+    </form>
+
+    <%- include("footer") %>
+  </body>
+</html>

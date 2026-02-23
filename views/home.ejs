@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>Welcome to the Home Page</h1>
+
+    <%- include("header") %>
+
+    <a href="/courses/add">Add New Course</a>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Course Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Code</th>
+          <th>Category</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <% data.forEach(el => { %>
+       <tr>
+        <td><%= el.name %></td>
+        <td><%= el.description %></td>
+        <td><%= el.price %></td>
+        <td><%= el.code %></td>
+        <td><%= el.category %></td>
+        <td><%= el.Materials.length %></td>
+        <td>
+          <a href="/courses/<%= el.id %>/materials">Detail Course</a>
+        </td>
+       </tr>
+      <% }) %>
+    </table>
+
+    <%- include("footer") %>
+  </body>
+</html>

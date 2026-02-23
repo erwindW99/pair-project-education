@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         through: models.CourseUser,
         foreignKey: "UserId",
       });
+
+      User.belongsToMany(models.Material, {
+        through: models.MaterialUser,
+        foreignKey: "UserId",
+      });
     }
   }
   User.init(

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Material</title>
+  </head>
+  <body>
+    <h1>Add New Material</h1>
+
+    <%- include("header") %>
+
+    <form action="/courses/<%= data.id %>/materials/add" method="post">
+      <label>Material Name</label>
+      <input type="text" name="name" />
+
+      <label>fileUrl</label>
+      <input type="text" name="fileUrl" />
+
+      <button type="submit">Add Material</button>
+    </form>
+
+    <%- include("footer") %>
+  </body>
+</html>
