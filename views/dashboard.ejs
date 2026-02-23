@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome <%= user.name %></h2>
+        <p>Email: <%= user.email %></p>
+        <p>Role: <%= user.role %></p>
+
+        <% if(user.role === "admin"){ %>
+            <h3>Admin Panel</h3>
+        <% } %>
+
+        <% if(user.role === "teacher"){ %>
+            <h3>Teacher Panel</h3>
+        <% } %>
+
+        <% if(user.role === "student"){ %>
+            <h3>Student Panel</h3>
+        <% } %>
+
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
