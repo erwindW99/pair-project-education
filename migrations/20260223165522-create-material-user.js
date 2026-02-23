@@ -2,30 +2,33 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Materials", {
+    await queryInterface.createTable("MaterialUsers", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-      },
-      fileUrl: {
-        type: Sequelize.STRING,
-      },
-      isFinish: {
-        type: Sequelize.BOOLEAN,
-      },
-      CourseId: {
+      UserId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Courses",
+          model: "Users",
           key: "id",
         },
         onUpdate: "cascade",
         onDelete: "cascade",
+      },
+      MaterialId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Materials",
+          key: "id",
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
+      },
+      isFinished: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Materials");
+    await queryInterface.dropTable("MaterialUsers");
   },
 };

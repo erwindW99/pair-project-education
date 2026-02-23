@@ -4,8 +4,11 @@ const usersRoutes = require("./users");
 const coursesRoutes = require("./courses");
 const Controller = require("../controllers/controller");
 
-//Halaman default => LOGIN
+//Halaman Login
 router.get("/", Controller.login);
+
+//Halaman Home
+router.get("/home", Controller.home);
 
 router.use("/users", usersRoutes);
 router.use("/courses", coursesRoutes);
