@@ -13,13 +13,31 @@ app.use(
     secret: "secretKey",
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 );
 
 const users = [
-  { id: 1, name: "Admin", email: "admin@mail.com", password: "123", role: "admin" },
-  { id: 2, name: "Teacher", email: "teacher@mail.com", password: "123", role: "teacher" },
-  { id: 3, name: "Student", email: "student@mail.com", password: "123", role: "student" },
+  {
+    id: 1,
+    name: "Admin",
+    email: "admin@mail.com",
+    password: "123",
+    role: "admin",
+  },
+  {
+    id: 2,
+    name: "Teacher",
+    email: "teacher@mail.com",
+    password: "123",
+    role: "teacher",
+  },
+  {
+    id: 3,
+    name: "Student",
+    email: "student@mail.com",
+    password: "123",
+    role: "student",
+  },
 ];
 
 app.use(router);

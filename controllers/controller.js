@@ -1,5 +1,10 @@
-const { Course, CourseUser, Material, User, UserProfile } = require("../models");
-
+const {
+  Course,
+  CourseUser,
+  Material,
+  User,
+  UserProfile,
+} = require("../models");
 
 class Controller {
   static async loginPage(req, res) {
@@ -47,7 +52,6 @@ class Controller {
       res.redirect("/login");
     });
   }
-  
 }
 
 module.exports = Controller;
