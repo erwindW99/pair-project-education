@@ -2,6 +2,10 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class UserProfile extends Model {
+    get birthOfDateFormatted() {
+      const formattedDate = this.birthOfDate.toISOString().split("T")[0];
+      return formattedDate;
+    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.

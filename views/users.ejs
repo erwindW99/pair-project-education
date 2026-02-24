@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users</title>
+  </head>
+  <body>
+    <h1>Users List</h1>
+    <%- include("header") %>
+
+    <a href="/users/register">Add new Users</a>
+    <table border="1">
+      <tr>
+        <thead>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date of Birth</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Role</th>
+          <th>Action</th>
+        </thead>
+      </tr>
+
+      <% data.forEach(el => { %>
+       <tr>
+        <td><%= el.UserProfile.firstName %></td>
+        <td><%= el.UserProfile.lastName %></td>
+        <td><%= el.UserProfile.birthOfDateFormatted %></td>
+        <td><%= el.email %></td>
+        <td><%= el.UserProfile.phoneNumber %></td>
+        <td><%= el.role %></td>
+        <td>
+          <a href="/users/<%= el.id %>/edit">Edit</a>
+          <a href="/users/<%= el.id %>/delete">Delete</a>
+        </td>
+       </tr>
+      <% }) %>
+    </table>
+
+    <%- include("footer") %>
+  </body>
+</html>
