@@ -8,6 +8,127 @@ class Controller {
     }
   }
 
+  static async users(req, res) {
+    try {
+      let data = await User.findAll({
+        include: UserProfile,
+      });
+
+      // res.send(data);
+      res.render("users", { data });
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async userRegisterForm(req, res) {
+    try {
+      res.render("userRegisters");
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async userRegister(req, res) {
+    try {
+      const {
+        firstName,
+        lastName,
+        birthOfDate,
+        email,
+        phoneNumber,
+        role,
+        password,
+      } = req.body;
+
+      let user = await User.create({
+        email,
+        password,
+        role,
+      });
+
+      await UserProfile.create({
+        firstName,
+        lastName,
+        birthOfDate,
+        phoneNumber,
+        UserId: user.id,
+      });
+
+      res.redirect("/users");
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async editUsersForm(req, res) {
+    try {
+      const { id } = req.params;
+
+      let data = await User.findByPk(id, {
+        include: UserProfile,
+      });
+
+      res.render("editUsers", { data });
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async editUsers(req, res) {
+    try {
+      const { id } = req.params;
+      const {
+        firstName,
+        lastName,
+        birthOfDate,
+        email,
+        phoneNumber,
+        role,
+        password,
+      } = req.body;
+
+      let user = await User.findByPk(id);
+
+      await user.update({
+        email,
+        password,
+        role,
+      });
+
+      let userProfile = await UserProfile.findOne({
+        where: {
+          UserId: id,
+        },
+      });
+
+      await userProfile.update({
+        firstName,
+        lastName,
+        birthOfDate,
+        phoneNumber,
+      });
+
+      res.redirect("/users");
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async deleteUsers(req, res) {
+    try {
+      const { id } = req.params;
+
+      let user = await User.findByPk(id);
+
+      await user.destroy();
+
+      res.redirect("/users");
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
   static async home(req, res) {
     try {
       let data = await Course.findAll({
