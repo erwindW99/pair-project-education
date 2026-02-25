@@ -30,5 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Course",
     },
   );
+
+  Course.beforeCreate((el) => {
+    el.code = `${el.category.toLowerCase().replace(" ", "_")}-${new Date().getFullYear()}`;
+  });
   return Course;
 };

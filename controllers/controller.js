@@ -1,8 +1,49 @@
+const { Op } = require("sequelize");
 const { User, UserProfile, Course, Material } = require("../models/index");
+const formattedCurrency = require("../helpers");
+const bcrypt = require("bcryptjs");
 class Controller {
+  static async loginForm(req, res) {
+    try {
+      const { error } = req.query;
+      res.render("login", { error });
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
   static async login(req, res) {
     try {
-      res.render("login");
+      const { email, password } = req.body;
+
+      const user = await User.findOne({ where: { email } });
+
+      if (user) {
+        const isValidPassword = bcrypt.compareSync(password, user.password);
+
+        if (isValidPassword) {
+          req.session.userId = user.id;
+          req.session.role = user.role;
+
+          return res.redirect("/home");
+        } else {
+          const error = "Invalid email or password";
+          return res.redirect(`/?error=${error}`);
+        }
+      } else {
+        const error = "Invalid email or password";
+        return res.redirect(`/?error=${error}`);
+      }
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async logout(req, res) {
+    try {
+      req.session.destroy();
+
+      res.redirect("/");
     } catch (error) {
       res.send(error);
     }
@@ -55,7 +96,7 @@ class Controller {
         UserId: user.id,
       });
 
-      res.redirect("/users");
+      res.redirect("/");
     } catch (error) {
       res.send(error);
     }
@@ -136,8 +177,30 @@ class Controller {
       });
       // console.log(data);
 
-      res.render("home", { data });
+      res.render("home", { data, formattedCurrency });
     } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async addCoursesForm(req, res) {
+    try {
+      res.render("addCourses");
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async addCourses(req, res) {
+    try {
+      const { name, description, price, category } = req.body;
+
+      await Course.create({ name, description, price, category });
+
+      res.redirect("/home");
+    } catch (error) {
+      console.log(error);
+
       res.send(error);
     }
   }
@@ -152,7 +215,8 @@ class Controller {
           CourseId: courseId,
         },
       });
-      let courseData = data[0].Course;
+
+      let courseData = await Course.findByPk(courseId);
 
       // console.log(data);
 
