@@ -3,8 +3,8 @@ const Controller = require("../controllers/controller");
 const router = require("express").Router();
 
 // Router untuk tambah course
-// router.get("/add", Controller.addCoursesForm);
-// router.post("/add", Controller.addCourses);
+router.get("/add", Controller.addCoursesForm);
+router.post("/add", Controller.addCourses);
 
 // Router cek detail materi berdasarkan courseId
 router.get("/:courseId/materials", Controller.courseMaterials);
