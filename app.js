@@ -20,6 +20,8 @@ app.use(
   }),
 );
 
+app.use("/static", express.static(__dirname + "/node_modules/chart.js/dist"));
+
 app.use(router);
 
 app.listen(port, () => {

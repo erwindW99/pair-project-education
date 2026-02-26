@@ -20,6 +20,7 @@
   "homepage": "https://github.com/erwindW99/pair-project-education#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "chart.js": "^4.5.1",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",

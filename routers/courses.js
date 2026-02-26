@@ -6,8 +6,14 @@ const router = require("express").Router();
 router.get("/add", Controller.addCoursesForm);
 router.post("/add", Controller.addCourses);
 
+// Router untuk tambah course
+router.get("/:courseId/edit", Controller.editCoursesForm);
+router.post("/:courseId/edit", Controller.editCourses);
+
 // Router cek detail materi berdasarkan courseId
 router.get("/:courseId/materials", Controller.courseMaterials);
+
+router.get("/:courseId/learn", Controller.learnCourse);
 
 //Router untuk tambah materi berdasarkan courseId
 router.get("/:courseId/materials/add", Controller.addMaterialsForm);
@@ -24,6 +30,11 @@ router.post("/:courseId/materials/:materialId/edit", Controller.editMaterials);
 router.get(
   "/:courseId/materials/:materialId/delete",
   Controller.deleteMaterials,
+);
+
+router.get(
+  "/:courseId/materials/:materialId/finish",
+  Controller.finishMaterial,
 );
 
 module.exports = router;

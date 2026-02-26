@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Course</title>
+  <title>Edit Course</title>
 </head>
 
 <body>
-  <h1>Add Course</h1>
+  <h1>Edit Course</h1>
 
   <% if (errors) { %>
   <% errors = errors.split(',') %>
@@ -18,25 +18,25 @@
   <% } %>
 
   <%- include("header") %>
-  <form action="/courses/add" method="post">
+  <form action="/courses/<%= data.id %>/edit" method="post">
     <label>Name</label>
-    <input type="text" name="name" />
+    <input type="text" name="name" value="<%= data.name %>"/>
 
     <label>Description</label>
-    <textarea name="description"></textarea>
+    <textarea name="description"><%= data.description %></textarea>
 
     <label>Price</label>
-    <input type="number" name="price" />
+    <input type="number" name="price" value="<%= data.price %>"/>
 
     <label>Category</label>
     <select name="category">
       <option selected disabled hidden>--Choose--</option>
       <% ["Pemrograman", "Web Dasar", "Backend", "Database"].forEach(category => { %>
-      <option value="<%= category %>"><%= category %></option>
+      <option value="<%= category %>" <%= data.category === category ? 'selected' : '' %>><%= category %></option>
       <% }) %>
     </select>
 
-    <button type="submit">Add Course</button>
+    <button type="submit">Edit Course</button>
   </form>
   <%- include("footer") %>
 </body>
