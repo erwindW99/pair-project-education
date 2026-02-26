@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         through: models.MaterialUser,
         foreignKey: "MaterialId",
       });
+
+      Material.hasMany(models.MaterialUser, { foreignKey: "MaterialId" });
     }
   }
   Material.init(

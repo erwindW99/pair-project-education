@@ -37,4 +37,6 @@ router.get(
   Controller.finishMaterial,
 );
 
+router.get("/:courseId/materials/:materialId/undo", Controller.undoMaterial);
+
 module.exports = router;

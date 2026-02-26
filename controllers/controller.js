@@ -64,13 +64,13 @@ class Controller {
 
   static async users(req, res) {
     try {
-      const { role } = req.session;
+      const { userId, role } = req.session;
       let data = await User.findAll({
         include: UserProfile,
       });
 
       // res.send(data);
-      res.render("users", { data, role });
+      res.render("users", { data, role, userId });
     } catch (error) {
       res.send(error);
     }
@@ -370,13 +370,18 @@ class Controller {
   static async courseMaterials(req, res) {
     try {
       const { courseId } = req.params;
-      const { role } = req.session;
+      const { role, userId } = req.session;
 
       let data = await Material.findAll({
-        include: Course,
-        where: {
-          CourseId: courseId,
-        },
+        include: [
+          Course,
+          {
+            model: MaterialUser,
+            required: false, // get all, but will only match for current user if you add 'where: { UserId: userId }'
+            where: { UserId: userId },
+          },
+        ],
+        where: { CourseId: courseId },
       });
 
       let courseData = await Course.findByPk(courseId);
@@ -503,6 +508,26 @@ class Controller {
       });
 
       req.session.notif = "Material marked as finished!";
+      res.redirect(`/courses/${courseId}/materials`);
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
+
+  static async undoMaterial(req, res) {
+    try {
+      const { courseId, materialId } = req.params;
+      const { userId } = req.session;
+      // Delete the progress record
+      await MaterialUser.destroy({
+        where: {
+          UserId: userId,
+          MaterialId: materialId,
+        },
+      });
+
+      req.session.notif = "Material progress undone!";
       res.redirect(`/courses/${courseId}/materials`);
     } catch (error) {
       console.log(error);

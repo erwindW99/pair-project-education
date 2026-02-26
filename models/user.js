@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
         through: models.MaterialUser,
         foreignKey: "UserId",
       });
+
+      User.hasMany(models.MaterialUser, { foreignKey: "UserId" });
     }
   }
   User.init(
@@ -41,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: { msg: "Password required" },
           notNull: { msg: "Password required" },
+          len: {
+            args: [8], // min length 8
+            msg: "Password must be at least 8 characters",
+          },
         },
       },
       role: {

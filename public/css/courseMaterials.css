@@ -56,7 +56,7 @@ a[href*="materials/add"]:hover {
 
 table {
   width: 93vw;
-  max-width: 950px;
+  max-width: 100%;
   margin: 0 auto 40px auto;
   border-collapse: collapse;
   background: #fff;
@@ -147,4 +147,54 @@ table a[href*="finish"]:hover {
     padding-left: 1vw;
     padding-right: 1vw;
   }
+}
+
+.file-link {
+  color: #2772e2;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.13s;
+  word-break: break-all;
+}
+.file-link:hover {
+  color: #401796;
+}
+.file-link-empty {
+  color: #888;
+  text-decoration: none;
+}
+svg {
+  vertical-align: middle;
+}
+
+.btn-finish {
+  background: #2fa15b;
+  color: #fff;
+  border: 1px solid #27a83b;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-right: 6px;
+  transition: background 0.12s;
+}
+.btn-finish:hover {
+  background: #186637;
+}
+
+.btn-progress {
+  background: #fca311;
+  color: #fff;
+  border: 1px solid #e08a04;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+.btn-progress:hover {
+  background: #401796;
+  color: #fff;
 }
