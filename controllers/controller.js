@@ -1,10 +1,21 @@
 const { Op } = require("sequelize");
-const { User, UserProfile, Course, Material } = require("../models/index");
+const {
+  User,
+  UserProfile,
+  Course,
+  Material,
+  CourseUser,
+  MaterialUser,
+} = require("../models/index");
 const formattedCurrency = require("../helpers");
 const bcrypt = require("bcryptjs");
 class Controller {
   static async loginForm(req, res) {
     try {
+      if (req.session.userId) {
+        return res.redirect("/home");
+      }
+
       const { error } = req.query;
       res.render("login", { error });
     } catch (error) {
@@ -24,6 +35,7 @@ class Controller {
         if (isValidPassword) {
           req.session.userId = user.id;
           req.session.role = user.role;
+          req.session.notif = `welcome back ${email} to this app`;
 
           return res.redirect("/home");
         } else {
@@ -104,9 +116,9 @@ class Controller {
 
   static async editUsersForm(req, res) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
 
-      let data = await User.findByPk(id, {
+      let data = await User.findByPk(userId, {
         include: UserProfile,
       });
 
@@ -118,7 +130,7 @@ class Controller {
 
   static async editUsers(req, res) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
       const {
         firstName,
         lastName,
@@ -129,7 +141,7 @@ class Controller {
         password,
       } = req.body;
 
-      let user = await User.findByPk(id);
+      let user = await User.findByPk(userId);
 
       await user.update({
         email,
@@ -158,9 +170,9 @@ class Controller {
 
   static async deleteUsers(req, res) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
 
-      let user = await User.findByPk(id);
+      let user = await User.findByPk(userId);
 
       await user.destroy();
 
@@ -172,12 +184,67 @@ class Controller {
 
   static async home(req, res) {
     try {
-      let data = await Course.findAll({
-        include: Material,
-      });
-      // console.log(data);
+      const { notif, userId } = req.session;
+      const { search } = req.query;
 
-      res.render("home", { data, formattedCurrency });
+      req.session.notif = null;
+
+      // Mendapatkan Course yang User Ikuti
+      let enrolledCourses = await Course.findAll({
+        include: [
+          {
+            model: CourseUser,
+            where: { UserId: userId },
+            required: true,
+          },
+          {
+            model: Material,
+          },
+        ],
+        where: search ? { name: { [Op.iLike]: `%${search}%` } } : undefined,
+      });
+
+      // Menghitung Progress Setiap Course
+      let chartLabels = [];
+      let chartData = [];
+
+      // Mencari Material yang Sudah Selesai per User (isFinished: true)
+      for (let course of enrolledCourses) {
+        chartLabels.push(course.name);
+
+        const totalMaterials = course.Materials.length;
+
+        let finishedCount = 0;
+
+        if (totalMaterials > 0) {
+          const materialIds = course.Materials.map((m) => m.id);
+
+          finishedCount = await MaterialUser.count({
+            where: {
+              MaterialId: materialIds,
+              UserId: userId,
+              isFinished: true,
+            },
+          });
+
+          const progress = Math.round((finishedCount / totalMaterials) * 100);
+          chartData.push(progress);
+        } else {
+          chartData.push(0);
+        }
+      }
+
+      // Kolom Search
+      let data = await Course.search(search);
+
+      res.render("home", {
+        data,
+        formattedCurrency,
+        notif,
+        search,
+        chartLabels,
+        chartData,
+      });
     } catch (error) {
       res.send(error);
     }
@@ -185,7 +252,9 @@ class Controller {
 
   static async addCoursesForm(req, res) {
     try {
-      res.render("addCourses");
+      const { errors } = req.query;
+
+      res.render("addCourses", { errors });
     } catch (error) {
       res.send(error);
     }
@@ -199,9 +268,53 @@ class Controller {
 
       res.redirect("/home");
     } catch (error) {
-      console.log(error);
+      if (error.name === "SequelizeValidationError") {
+        let errors = error.errors.map((el) => el.message);
+        return res.redirect(`/courses/add?errors=${errors}`);
+      } else {
+        console.log(error);
+        res.send(error);
+      }
+    }
+  }
 
+  static async editCoursesForm(req, res) {
+    try {
+      const { courseId } = req.params;
+      const { errors } = req.query;
+      let data = await Course.findByPk(courseId);
+
+      res.render("editCourses", { data, errors });
+    } catch (error) {
       res.send(error);
+    }
+  }
+
+  static async editCourses(req, res) {
+    try {
+      const { courseId } = req.params;
+      const { name, description, price, category } = req.body;
+
+      let material = await Course.findByPk(courseId);
+
+      await material.update({
+        name,
+        description,
+        price,
+        category,
+      });
+      // console.log(data);
+
+      res.redirect(`/home`);
+    } catch (error) {
+      const { courseId } = req.params;
+      if (error.name === "SequelizeValidationError") {
+        let errors = error.errors.map((el) => el.message);
+        return res.redirect(`/courses/${courseId}/edit?errors=${errors}`);
+      } else {
+        console.log(error);
+        res.send(error);
+      }
     }
   }
 
@@ -222,6 +335,29 @@ class Controller {
 
       res.render("courseMaterials", { data, courseData });
     } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async learnCourse(req, res) {
+    try {
+      const { courseId } = req.params;
+      const { userId } = req.session;
+
+      if (!userId) {
+        return res.redirect("/?error=Please login first");
+      }
+
+      await CourseUser.findOrCreate({
+        where: {
+          UserId: userId,
+          CourseId: courseId,
+        },
+      });
+
+      res.redirect("/home");
+    } catch (error) {
+      console.log(error);
       res.send(error);
     }
   }
@@ -298,6 +434,29 @@ class Controller {
 
       res.redirect(`/courses/${courseId}/materials`);
     } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async finishMaterial(req, res) {
+    try {
+      const { courseId, materialId } = req.params;
+      const { userId } = req.session;
+
+      await MaterialUser.findOrCreate({
+        where: {
+          UserId: userId,
+          MaterialId: materialId,
+        },
+        defaults: {
+          isFinished: true,
+        },
+      });
+
+      req.session.notif = "Material marked as finished!";
+      res.redirect(`/courses/${courseId}/materials`);
+    } catch (error) {
+      console.log(error);
       res.send(error);
     }
   }
