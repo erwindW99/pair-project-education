@@ -4,17 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/courseMaterials.css" />
   <title>Course Materials</title>
 </head>
 
 <body>
-  <h1>Course Material</h1>
-
   <%- include("header") %>
+  <h1>Course Material <%= courseData.name %></h1>
 
-  <h2 class="course-name"><%= courseData.name %></h2>
-
+  <% if (role === 'Teacher') { %>
   <a href="/courses/<%= courseData.id %>/materials/add">Add new Material</a>
+  <% } %>
+
   <table border="1">
     <thead>
       <tr>
@@ -29,9 +32,13 @@
       <td><%= el.name %></td>
       <td><%= el.fileUrl %></td>
       <td>
+        <% if (role === 'Teacher') { %>
         <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/edit">Edit</a>
         <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/delete" onclick="return confirm('Are you sure want to delete?')">Delete</a>
+        <% } %>
+        <% if (role === 'Student') { %>
         <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/finish" onclick="return confirm('Mark as finished?')">Finished</a>
+        <% } %>
       </td>
     </tr>
     <% }) %>

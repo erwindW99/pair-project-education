@@ -25,9 +25,32 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      role: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: { msg: "Email already used" },
+        validate: {
+          notEmpty: { msg: "Email required" },
+          notNull: { msg: "Email required" },
+          isEmail: { msg: "This is not Email" },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Password required" },
+          notNull: { msg: "Password required" },
+        },
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Role required" },
+          notNull: { msg: "Role required" },
+        },
+      },
     },
     {
       sequelize,
@@ -39,6 +62,13 @@ module.exports = (sequelize, DataTypes) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(el.password, salt);
     el.password = hash;
+  });
+
+  User.beforeUpdate((user) => {
+    if (user.changed("password")) {
+      const salt = bcrypt.genSaltSync(10);
+      user.password = bcrypt.hashSync(user.password, salt);
+    }
   });
   return User;
 };

@@ -1,0 +1,143 @@
+body {
+  background: #fff;
+  color: #2d2f31;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+main {
+  max-width: 1100px;
+  margin: 32px auto 0;
+  padding: 0 16px;
+}
+
+form {
+  margin: 24px 0 28px 0;
+  display: flex;
+  gap: 10px;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d7dc;
+  font-size: 1rem;
+  flex: 1 1 0;
+}
+
+button[type="submit"],
+a.add-course-btn {
+  background: #5624d0;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1.07rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.18s;
+  text-decoration: none;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+button[type="submit"]:hover,
+a.add-course-btn:hover {
+  background: #401796;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 30px;
+  margin: 38px 0;
+}
+
+.course-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid #ececec;
+  box-shadow: 0 4px 28px 0 rgba(86, 36, 208, 0.08);
+  padding: 26px 23px 20px 23px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  transition: transform 0.13s;
+}
+
+.course-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px 0 rgba(86, 36, 208, 0.13);
+  border-color: #5624d0;
+}
+
+.course-card h2 {
+  margin: 0 0 6px 0;
+  color: #5624d0;
+  font-size: 1.19rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+}
+
+.course-info {
+  margin-bottom: 8px;
+  font-size: 0.97rem;
+  color: #44474a;
+}
+.course-info strong {
+  color: #fca311;
+  margin-right: 5px;
+}
+
+.course-stats {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 10px;
+  font-size: 0.98rem;
+}
+
+.course-card .actions {
+  display: flex;
+  gap: 12px;
+}
+
+.course-card .actions a {
+  background: #ececec;
+  color: #2d2f31;
+  padding: 7px 13px;
+  border-radius: 7px;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition:
+    background 0.16s,
+    color 0.16s;
+  border: 1px solid transparent;
+}
+
+.course-card .actions a:hover {
+  background: #5624d0;
+  color: #fff;
+  border: 1px solid #401796;
+}
+
+/* Notification box */
+.alert-success {
+  background: #e1fbe8;
+  color: #27722a;
+  border-left: 6px solid #2fa15b;
+  border-radius: 9px;
+  margin: 24px auto 0 auto;
+  max-width: 560px;
+  padding: 10px 28px;
+  font-size: 1.04rem;
+  font-weight: 600;
+}
+
+/* Hide default table styling for safety */
+table {
+  display: none;
+}

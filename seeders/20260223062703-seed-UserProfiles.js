@@ -1,18 +1,28 @@
 "use strict";
-const fs = require("fs").promises;
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    let data = JSON.parse(
-      await fs.readFile("./data/userprofiles.json", "utf8"),
-    ).map((el) => {
-      delete el.id;
-      el.createdAt = el.updatedAt = new Date();
-      return el;
-    });
-
-    await queryInterface.bulkInsert("UserProfiles", data);
+    await queryInterface.bulkInsert("UserProfiles", [
+      {
+        firstName: "Erwind",
+        lastName: "Wiranata",
+        birthOfDate: new Date("03/03/2004"),
+        UserId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        phoneNumber: "08112233",
+      },
+      {
+        firstName: "Farhan",
+        lastName: "Izzuadi",
+        birthOfDate: new Date("03/03/1777"),
+        UserId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        phoneNumber: "0811223344",
+      },
+    ]);
     /**
      * Add seed commands here.
      *

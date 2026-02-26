@@ -18,11 +18,47 @@ module.exports = (sequelize, DataTypes) => {
   }
   UserProfile.init(
     {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      birthOfDate: DataTypes.DATE,
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "First Name required" },
+          notNull: { msg: "First Name required" },
+        },
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Last Name required" },
+          notNull: { msg: "Last Name required" },
+        },
+      },
+      birthOfDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "BirthOfDate required" },
+          notNull: { msg: "BirthOfDate required" },
+          validateAge(value) {
+            const currentYear = new Date().getFullYear();
+            const birthYear = new Date(value).getFullYear();
+            const age = currentYear - birthYear;
+            if (age < 10) {
+              throw new Error("age must be at least 10 years old");
+            }
+          },
+        },
+      },
       UserId: DataTypes.INTEGER,
-      phoneNumber: DataTypes.STRING,
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Phone Number required" },
+          notNull: { msg: "Phone Number required" },
+        },
+      },
     },
     {
       sequelize,

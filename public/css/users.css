@@ -1,0 +1,139 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:
+    linear-gradient(
+      130deg,
+      rgba(86, 36, 208, 0.1) 0%,
+      rgba(252, 163, 17, 0.07) 100%
+    ),
+    #f9f9fc;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #2d2f31;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: #5624d0;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 32px;
+  margin-bottom: 33px;
+}
+
+a[href="/register"] {
+  display: inline-block;
+  margin: 0 auto 22px 36px;
+  background: #5624d0;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.13s;
+  box-shadow: 0 3px 15px 0 rgba(86, 36, 208, 0.07);
+}
+a[href="/register"]:hover {
+  background: #401796;
+}
+
+table {
+  width: 94vw;
+  max-width: 1100px;
+  margin: 16px auto 36px auto;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 17px;
+  box-shadow: 0 4px 22px 0 rgba(86, 36, 208, 0.09);
+  overflow: hidden;
+}
+
+thead th {
+  background-color: #ececec;
+  color: #401796;
+  font-weight: bold;
+  padding: 12px 10px;
+  font-size: 1.05rem;
+  border-bottom: 2px solid #ececec;
+}
+
+tr {
+  border-bottom: 1px solid #ececec;
+}
+
+td {
+  padding: 11px 15px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+td:last-child {
+  min-width: 120px;
+}
+
+tr:nth-child(even) {
+  background: #f5f2fa;
+}
+
+tr:hover {
+  background: #f4eaff;
+  transition: background 0.09s;
+}
+
+table a {
+  padding: 6px 13px;
+  margin: 0 3px;
+  background: #fca311;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.99rem;
+  transition:
+    background 0.13s,
+    color 0.13s;
+  border: none;
+  display: inline-block;
+}
+table a:hover {
+  background: #5624d0;
+  color: #fff;
+}
+
+@media (max-width: 800px) {
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  table {
+    width: 99vw;
+  }
+  tr {
+    margin-bottom: 12px;
+  }
+  td {
+    text-align: left;
+    padding: 12px 8vw 12px 12px;
+    border: none;
+    position: relative;
+  }
+  td:last-child {
+    min-width: unset;
+  }
+}

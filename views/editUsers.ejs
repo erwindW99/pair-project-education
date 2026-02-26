@@ -1,44 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit User</title>
-  </head>
-  <body>
-    <h1>Edit User</h1>
-    <%- include("header") %>
 
-    <form action="/users/<%= data.id %>/edit" method="post">
-      <label>First Name</label>
-      <input type="text" name="firstName" value="<%= data.UserProfile.firstName %>"/>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/editUsers.css" />
+  <title>Edit User</title>
+</head>
 
-      <label>Last Name</label>
-      <input type="text" name="lastName" value="<%= data.UserProfile.lastName %>"/>
+<body>
+  <%- include("header") %>
+  <h1>Edit User</h1>
 
-      <label>Date of Birth</label>
-      <input type="date" name="birthOfDate" value="<%= data.UserProfile.birthOfDateFormatted %>"/>
+  <% if (errors) { %>
+  <% errors = errors.split(',') %>
+  <% errors.forEach(el => { %>
+  <p style="color: red; font-weight: bold;"><%= el %></p>
+  <% }) %>
+  <% } %>
 
-      <label>Email</label>
-      <input type="text" name="email" value="<%= data.email %>"/>
+  <form action="/users/<%= data.id %>/edit" method="post">
+    <label>First Name</label>
+    <input type="text" name="firstName" value="<%= data.UserProfile.firstName %>" />
 
-      <label>Phone Number</label>
-      <input type="text" name="phoneNumber" value="<%= data.UserProfile.phoneNumber %>"/>
+    <label>Last Name</label>
+    <input type="text" name="lastName" value="<%= data.UserProfile.lastName %>" />
 
-      <label>Role</label>
-      <select name="role">
-        <option selected disable hidden>--Choose--</option>
-        <% ["Teacher", "Student"].forEach(role => { %>
-         <option value="<%= role %>" <%= data.role === role? 'selected' : '' %>><%= role %></option>
-        <% }) %>
-      </select>
+    <label>Date of Birth</label>
+    <input type="date" name="birthOfDate" value="<%= data.UserProfile.birthOfDateFormatted %>" />
 
-      <label> Password</label>
-      <input type="password" name="password" value="<%= data.password %>">
+    <label>Email</label>
+    <input type="text" name="email" value="<%= data.email %>" />
 
-      <button type="submit">Register</button>
-    </form>
+    <label>Phone Number</label>
+    <input type="text" name="phoneNumber" value="<%= data.UserProfile.phoneNumber %>" />
 
-    <%- include("footer") %>
-  </body>
+    <label>Role</label>
+    <select name="role">
+      <option selected disable hidden>--Choose--</option>
+      <% ["Teacher", "Student"].forEach(role => { %>
+      <option value="<%= role %>" <%= data.role === role? 'selected' : '' %>><%= role %></option>
+      <% }) %>
+    </select>
+
+    <label> Password</label>
+    <input type="password" name="password">
+
+    <button type="submit">Register</button>
+  </form>
+
+  <%- include("footer") %>
+</body>
+
 </html>

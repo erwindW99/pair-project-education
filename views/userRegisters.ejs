@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Registration</title>
-  </head>
-  <body>
-    <h1>User Registration</h1>
-    <%- include("header") %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/register.css" />
+  <title>User Registration</title>
+</head>
+
+<body>
+  <div class="register-container">
+    <h1>Register First!!!</h1>
+    <% if (errors) { %>
+    <% errors = errors.split(',') %>
+    <div class="error-grid">
+      <% errors.forEach(el => { %>
+      <div class="error-message"><%= el %></div>
+      <% }) %>
+    </div>
+    <% } %>
 
     <form action="/register" method="post">
       <label>First Name</label>
@@ -29,7 +40,7 @@
       <select name="role">
         <option selected disable hidden>--Choose--</option>
         <% ["Teacher", "Student"].forEach(role => { %>
-         <option value="<%= role %>"><%= role %></option>
+        <option value="<%= role %>"><%= role %></option>
         <% }) %>
       </select>
 
@@ -38,7 +49,7 @@
 
       <button type="submit">Register</button>
     </form>
+  </div>
+</body>
 
-    <%- include("footer") %>
-  </body>
 </html>

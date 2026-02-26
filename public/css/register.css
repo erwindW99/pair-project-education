@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #2d2f31;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(86, 36, 208, 0.23) 0%,
+      rgba(252, 163, 17, 0.09) 100%
+    ),
+    url("/education-bg.jpg") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-container {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 32px 0 rgba(86, 36, 208, 0.14);
+  border-radius: 20px;
+  border: 1px solid #d1d7dc;
+  max-width: 550px;
+  width: 100%;
+  padding: 50px 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #5624d0;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.error-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.error-message {
+  color: #b72d0f;
+  background: #ffe5e0;
+  border-left: 4px solid #b72d0f;
+  padding: 8px 10px;
+  border-radius: 4px;
+  min-width: 120px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+form {
+  width: 100%;
+}
+
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #2d2f31;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="password"],
+form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #d1d7dc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+form select {
+  font-family: inherit;
+}
+
+button[type="submit"] {
+  background-color: #5624d0;
+  color: #fff;
+  border: none;
+  padding: 13px 0;
+  font-size: 1.18rem;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+  background: #401796;
+}
+
+/* Responsive for mobile */
+@media (max-width: 700px) {
+  .register-container {
+    padding: 28px 6px;
+    max-width: 97vw;
+  }
+}

@@ -1,0 +1,24 @@
+footer {
+  width: 100vw;
+  padding: 18px 0;
+  background: #ececec;
+  color: #2d2f31;
+  text-align: center;
+  font-size: 1.01rem;
+  border-top: 2px solid #d1d7dc;
+  box-shadow: 0 -1px 8px 0 rgba(86, 36, 208, 0.05);
+  position: relative;
+  bottom: 0;
+}
+
+footer p {
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 600px) {
+  footer {
+    font-size: 0.95rem;
+    padding: 11px 0;
+  }
+}
