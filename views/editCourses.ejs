@@ -35,7 +35,7 @@
     <label>Category</label>
     <select name="category">
       <option selected disabled hidden>--Choose--</option>
-      <% ["Pemrograman", "Web Dasar", "Backend", "Database"].forEach(category => { %>
+      <% ["Pemrograman", "Web Dasar","Frontend", "Backend", "Database"].forEach(category => { %>
       <option value="<%= category %>" <%= data.category === category ? 'selected' : '' %>><%= category %></option>
       <% }) %>
     </select>

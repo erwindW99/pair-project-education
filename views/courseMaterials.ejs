@@ -30,14 +30,31 @@
     <% data.forEach(el => { %>
     <tr>
       <td><%= el.name %></td>
-      <td><%= el.fileUrl %></td>
+      <td>
+        <% if (el.fileUrl && el.fileUrl.trim() !== "") { %>
+        <a href="<%= el.fileUrl %>" target="_blank" class="file-link">
+
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px;">
+            <path d="M6.125 9.125a2.5 2.5 0 010-3.533l3.533-3.533a2.5 2.5 0 013.534 3.534l-1.767 1.767" stroke="#2772e2" stroke-width="1.2" />
+            <path d="M9.875 6.875a2.5 2.5 0 010 3.533l-3.533 3.533a2.5 2.5 0 11-3.533-3.533L4.137 8.638" stroke="#2772e2" stroke-width="1.2" />
+          </svg>
+          <%= el.fileUrl %>
+        </a>
+        <% } else { %>
+        <span class="file-link file-link-empty">No File</span>
+        <% } %>
+      </td>
       <td>
         <% if (role === 'Teacher') { %>
         <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/edit">Edit</a>
         <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/delete" onclick="return confirm('Are you sure want to delete?')">Delete</a>
         <% } %>
         <% if (role === 'Student') { %>
-        <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/finish" onclick="return confirm('Mark as finished?')">Finished</a>
+        <% if (el.MaterialUsers && el.MaterialUsers.length > 0) { %>
+        <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/undo" class="btn-progress" onclick="return confirm('Change back to Progress?')">Progress</a>
+        <% } else { %>
+        <a href="/courses/<%= courseData.id %>/materials/<%= el.id %>/finish" class="btn-finish" onclick="return confirm('Mark as finished?')">Finished</a>
+        <% } %>
         <% } %>
       </td>
     </tr>

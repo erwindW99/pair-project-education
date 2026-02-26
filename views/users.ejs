@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/header.css" />
   <link rel="stylesheet" href="/css/footer.css" />
   <link rel="stylesheet" href="/css/users.css" />
-    <title>Users</title>
-  </head>
-  <body>
-    <%- include("header") %>
-    
-    <h1>Users List</h1>
-    <table border="1">
-      <tr>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Date of Birth</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Role</th>
-          <th>Action</th>
-        </thead>
-      </tr>
+  <title>Users</title>
+</head>
 
-      <% data.forEach(el => { %>
-       <tr>
-        <td><%= el.UserProfile.firstName %></td>
-        <td><%= el.UserProfile.lastName %></td>
-        <td><%= el.UserProfile.birthOfDateFormatted %></td>
-        <td><%= el.email %></td>
-        <td><%= el.UserProfile.phoneNumber %></td>
-        <td><%= el.role %></td>
-        <td>
-          <a href="/users/<%= el.id %>/edit">Edit</a>
-          <a href="/users/<%= el.id %>/delete" onclick="return confirm('Are you sure want to delete?')">Delete</a>
-        </td>
-       </tr>
-      <% }) %>
-    </table>
+<body>
+  <%- include("header") %>
 
-    <%- include("footer") %>
-  </body>
+  <h1>Users List</h1>
+  <table border="1">
+    <tr>
+      <thead>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Date of Birth</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Role</th>
+        <th>Action</th>
+      </thead>
+    </tr>
+
+    <% data.forEach(el => { %>
+    <tr>
+      <td><%= el.UserProfile.firstName %></td>
+      <td><%= el.UserProfile.lastName %></td>
+      <td><%= el.UserProfile.birthOfDateFormatted %></td>
+      <td><%= el.email %></td>
+      <td><%= el.UserProfile.phoneNumber %></td>
+      <td><%= el.role %></td>
+      <td>
+        <a href="/users/<%= el.id %>/edit">Edit</a>
+        <% if (el.id !== userId) { %>
+        <a href="/users/<%= el.id %>/delete" onclick="return confirm('Are you sure want to delete?')">Delete</a>
+        <% } %>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+
+  <%- include("footer") %>
+</body>
+
 </html>

@@ -1,5 +1,11 @@
 body {
-  background: #fff;
+  background:
+    linear-gradient(
+      130deg,
+      rgba(86, 36, 208, 0.15) 0%,
+      rgba(252, 163, 17, 0.07) 100%
+    ),
+    #edeaf8;
   color: #2d2f31;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -92,6 +98,17 @@ a.add-course-btn:hover {
   margin-right: 5px;
 }
 
+.course-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* fallback for older browsers */
+  max-height: 6.2em; /* 4 lines x 1.5em line-height, adjust as needed */
+}
+
 .course-stats {
   display: flex;
   gap: 18px;
@@ -140,4 +157,76 @@ a.add-course-btn:hover {
 /* Hide default table styling for safety */
 table {
   display: none;
+}
+
+.btn-detail {
+  background: #ececec !important;
+  color: #401796 !important;
+  border: 1px solid #d1d7dc !important;
+}
+.btn-detail:hover {
+  background: #401796 !important;
+  color: #fff !important;
+  border: 1px solid #5624d0 !important;
+}
+
+.btn-learn {
+  background: #2fa15b !important;
+  color: #fff !important;
+  border: 1px solid #27a83b !important;
+}
+.btn-learn:hover {
+  background: #186637 !important;
+  color: #fff !important;
+  border: 1px solid #2fa15b !important;
+}
+
+.chart-section {
+  background:
+    linear-gradient(
+      130deg,
+      rgba(86, 36, 208, 0.14) 0%,
+      rgba(252, 163, 17, 0.08) 100%
+    ),
+    #edeaf8;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(86, 36, 208, 0.11);
+  padding: 36px 48px 32px 48px;
+  margin: 50px auto 48px auto;
+  max-width: 980px;
+  border: 1.5px solid #ececec;
+  transition: background 0.18s;
+}
+
+.chart-title {
+  color: #5624d0;
+  font-size: 1.37rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 22px;
+  letter-spacing: 0.03em;
+}
+
+canvas#progressChart {
+  display: block;
+  margin: 0 auto;
+  background: linear-gradient(120deg, #edeaf8 75%, #fca31113 100%);
+  border-radius: 16px;
+  border: 1.5px solid #5624d022;
+  box-shadow: 0 3px 24px 0 rgba(86, 36, 208, 0.07);
+  width: 900px !important;
+  height: 370px !important;
+  max-width: 100%;
+  transition: box-shadow 0.17s;
+}
+
+@media (max-width: 1100px) {
+  .chart-section {
+    padding: 20px 5vw 18px 5vw;
+    max-width: 99vw;
+  }
+  canvas#progressChart {
+    width: 94vw !important;
+    height: 260px !important;
+  }
 }

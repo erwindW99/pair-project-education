@@ -32,7 +32,7 @@
         <h2><%= el.name %></h2>
         <div class="course-info"><strong>Category:</strong> <%= el.category %></div>
         <div class="course-info"><strong>Code:</strong> <%= el.code %></div>
-        <div class="course-info"><strong>Description:</strong> <%= el.description %></div>
+        <div class="course-info course-desc"><strong>Description:</strong> <%= el.description %></div>
         <div class="course-stats">
           <span><strong>Price:</strong> <%= formattedCurrency(el.price) %></span>
           <span><strong>Materials:</strong> <%= el.Materials.length %></span>
@@ -40,12 +40,12 @@
         <div class="actions">
           <% if (role === 'Student') { %>
           <% if (!learnIds.includes(el.id)) { %>
-          <a href="/courses/<%= el.id %>/learn" onclick="return confirm('Are you sure you want to enroll in this course?')">Learn Course</a>
+          <a href="/courses/<%= el.id %>/learn" class="btn-learn" onclick="return confirm('Are you sure you want to enroll in this course?')">Learn Course</a>
           <% } else { %>
-          <a href="/courses/<%= el.id %>/materials">Detail Course</a>
+          <a href="/courses/<%= el.id %>/materials" class="btn-detail">Detail Course</a>
           <% } %>
           <% } else if (role === 'Teacher') { %>
-          <a href="/courses/<%= el.id %>/materials">Detail Course</a>
+          <a href="/courses/<%= el.id %>/materials" >Detail Course</a>
           <a href="/courses/<%= el.id %>/edit">Edit</a>
           <% } %>
         </div>
@@ -54,7 +54,10 @@
     </div>
 
     <% if (role === 'Student') { %>
-    <canvas id="progressChart" width="600" height="300"></canvas>
+    <div class="chart-section">
+      <h3 class="chart-title">Your Course Progress</h3>
+      <canvas id="progressChart" width="600" height="300"></canvas>
+    </div>
     <script src="/static/chart.umd.js"></script>
     <script id="chart-data" type="application/json">
       <%- JSON.stringify({ labels: chartLabels || [], data: chartData || [] }) %>
@@ -69,9 +72,19 @@
           datasets: [{
             label: 'Course Progress (%)',
             data: chartVars.data,
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
+            backgroundColor: [
+              'rgba(86, 36, 208, 0.22)',
+              'rgba(252, 163, 17, 0.22)',
+              'rgba(86, 36, 208, 0.22)',
+              'rgba(252, 163, 17, 0.22)',
+            ],
+            borderColor: [
+              'rgba(86, 36, 208, 1)',
+              'rgba(252, 163, 17, 1)',
+              'rgba(86, 36, 208, 1)',
+              'rgba(252, 163, 17, 1)',
+            ],
+            borderWidth: 2
           }]
         },
         options: {
