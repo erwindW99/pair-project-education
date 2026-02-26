@@ -1,7 +1,7 @@
 <header>
-  <center>
-    <a href="/home">Home</a>
+  <a href="/home">8cademy</a>
+  <% if (role !== 'Student') { %>
     <a href="/users">Users</a>
-    <a href="/logout">Logout</a>
-  </center>
+  <% } %>
+  <a href="/logout">Logout</a>
 </header>

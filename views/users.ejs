@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/users.css" />
     <title>Users</title>
   </head>
   <body>
-    <h1>Users List</h1>
     <%- include("header") %>
-
-    <a href="/register">Add new Users</a>
+    
+    <h1>Users List</h1>
     <table border="1">
       <tr>
         <thead>
@@ -33,7 +35,7 @@
         <td><%= el.role %></td>
         <td>
           <a href="/users/<%= el.id %>/edit">Edit</a>
-          <a href="/users/<%= el.id %>/delete">Delete</a>
+          <a href="/users/<%= el.id %>/delete" onclick="return confirm('Are you sure want to delete?')">Delete</a>
         </td>
        </tr>
       <% }) %>

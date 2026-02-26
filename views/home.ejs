@@ -4,88 +4,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/home.css" />
   <title>Home</title>
 </head>
 
 <body>
-  <h1>Welcome to the Home Page</h1>
-
-  <% if (notif) { %>
-  <div class="alert alert-success">
-    <%= notif %>
-  </div>
-  <% } %>
-
   <%- include("header") %>
 
-  <form method="get" action="/home">
-    <input type="text" name="search" placeholder="Search your course by name" />
-    <button type="submit">Search</button>
-  </form>
+  <main>
+    <form method="get" action="/home">
+      <input type="text" name="search" placeholder="Search your course by name" />
+      <button type="submit">Search</button>
+      <% if (role === 'Teacher') { %>
+      <a href="/courses/add" class="add-course-btn">Add New Course</a>
+      <% } %>
+    </form>
 
-  <a href="/courses/add">Add New Course</a>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Course Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Code</th>
-        <th>Category</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+    <% if (notif) { %>
+    <div class="alert alert-success"><%= notif %></div>
+    <% } %>
 
-    <% data.forEach(el => { %>
-    <tr>
-      <td><%= el.name %></td>
-      <td><%= el.description %></td>
-      <td><%= formattedCurrency(el.price) %></td>
-      <td><%= el.code %></td>
-      <td><%= el.category %></td>
-      <td><%= el.Materials.length %></td>
-      <td>
-        <a href="/courses/<%= el.id %>/materials">Detail Course</a>
-        <a href="/courses/<%= el.id %>/edit">Edit</a>
-        <a href="/courses/<%= el.id %>/learn" onclick="return confirm('Are you sure you want to enroll in this course?')">
-          Learn Course
-        </a>
-      </td>
-    </tr>
-    <% }) %>
-  </table>
+    <div class="course-grid">
+      <% data.forEach(el => { %>
+      <div class="course-card">
+        <h2><%= el.name %></h2>
+        <div class="course-info"><strong>Category:</strong> <%= el.category %></div>
+        <div class="course-info"><strong>Code:</strong> <%= el.code %></div>
+        <div class="course-info"><strong>Description:</strong> <%= el.description %></div>
+        <div class="course-stats">
+          <span><strong>Price:</strong> <%= formattedCurrency(el.price) %></span>
+          <span><strong>Materials:</strong> <%= el.Materials.length %></span>
+        </div>
+        <div class="actions">
+          <% if (role === 'Student') { %>
+          <% if (!learnIds.includes(el.id)) { %>
+          <a href="/courses/<%= el.id %>/learn" onclick="return confirm('Are you sure you want to enroll in this course?')">Learn Course</a>
+          <% } else { %>
+          <a href="/courses/<%= el.id %>/materials">Detail Course</a>
+          <% } %>
+          <% } else if (role === 'Teacher') { %>
+          <a href="/courses/<%= el.id %>/materials">Detail Course</a>
+          <a href="/courses/<%= el.id %>/edit">Edit</a>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
+    </div>
 
- <canvas id="progressChart" width="600" height="300"></canvas>
-
-<script src="/static/chart.umd.js"></script>
-
-<script id="chart-data" type="application/json">
-<%- JSON.stringify({ labels: chartLabels || [], data: chartData || [] }) %>
-</script>
-
-<script>
-  const chartVars = JSON.parse(document.getElementById('chart-data').textContent);
-  const ctx = document.getElementById('progressChart').getContext('2d');
-  const progressChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: chartVars.labels,
-      datasets: [{
-        label: 'Course Progress (%)',
-        data: chartVars.data,
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: { beginAtZero: true, max: 100 }
-      }
-    }
-  });
-</script>
+    <% if (role === 'Student') { %>
+    <canvas id="progressChart" width="600" height="300"></canvas>
+    <script src="/static/chart.umd.js"></script>
+    <script id="chart-data" type="application/json">
+      <%- JSON.stringify({ labels: chartLabels || [], data: chartData || [] }) %>
+    </script>
+    <script>
+      const chartVars = JSON.parse(document.getElementById('chart-data').textContent);
+      const ctx = document.getElementById('progressChart').getContext('2d');
+      const progressChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: chartVars.labels,
+          datasets: [{
+            label: 'Course Progress (%)',
+            data: chartVars.data,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+    </script>
+    <% } %>
+  </main>
 
   <%- include("footer") %>
 </body>

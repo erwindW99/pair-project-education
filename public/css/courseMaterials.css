@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:
+    linear-gradient(
+      130deg,
+      rgba(86, 36, 208, 0.13) 0%,
+      rgba(252, 163, 17, 0.07) 100%
+    ),
+    #f9f9fc;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #2d2f31;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+h1 {
+  color: #5624d0;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 32px;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.course-name {
+  text-align: center;
+  font-size: 1.27rem;
+  color: #401796;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  font-weight: 600;
+}
+
+a[href*="materials/add"] {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 24px auto;
+  background: #5624d0;
+  color: #fff;
+  padding: 9px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.14s;
+  box-shadow: 0 2px 7px 0 rgba(86, 36, 208, 0.06);
+}
+a[href*="materials/add"]:hover {
+  background: #401796;
+}
+
+table {
+  width: 93vw;
+  max-width: 950px;
+  margin: 0 auto 40px auto;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 22px 0 rgba(86, 36, 208, 0.08);
+  overflow: hidden;
+}
+
+thead th {
+  background-color: #ececec;
+  color: #401796;
+  font-weight: bold;
+  padding: 12px 10px;
+  font-size: 1.01rem;
+  border-bottom: 2px solid #ececec;
+  text-align: center;
+}
+
+tr {
+  border-bottom: 1px solid #ececec;
+}
+
+td {
+  padding: 10px 18px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+tr:nth-child(even) {
+  background: #f5f2fa;
+}
+
+tr:hover {
+  background: #f4eaff;
+  transition: background 0.1s;
+}
+
+td:last-child {
+  min-width: 172px;
+}
+
+table a {
+  padding: 6px 13px;
+  margin: 3px 7px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.98rem;
+  font-weight: 600;
+  transition:
+    background 0.13s,
+    color 0.13s;
+  border: none;
+  display: inline-block;
+  background: #ececec;
+  color: #5624d0;
+}
+table a[href*="edit"] {
+  background: #fca311;
+  color: #fff;
+}
+table a[href*="edit"]:hover {
+  background: #e08a04;
+}
+table a[href*="delete"] {
+  background: #d90429;
+  color: #fff;
+}
+table a[href*="delete"]:hover {
+  background: #8d021f;
+}
+table a[href*="finish"] {
+  background: #2fa15b;
+  color: #fff;
+}
+table a[href*="finish"]:hover {
+  background: #1d683a;
+}
+
+@media (max-width: 900px) {
+  table {
+    width: 99vw;
+    font-size: 0.96rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  td,
+  th {
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+}

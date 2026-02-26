@@ -4,20 +4,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/editCourses.css" />
   <title>Edit Course</title>
 </head>
 
 <body>
+  <%- include("header") %>
+
   <h1>Edit Course</h1>
 
   <% if (errors) { %>
   <% errors = errors.split(',') %>
   <% errors.forEach(el => { %>
-  <p style="color: red; font-weight: bold;"><%= el %></p>
+  <p class="p-error" style="color: red; font-weight: bold;"><%= el %></p>
   <% }) %>
   <% } %>
 
-  <%- include("header") %>
   <form action="/courses/<%= data.id %>/edit" method="post">
     <label>Name</label>
     <input type="text" name="name" value="<%= data.name %>"/>

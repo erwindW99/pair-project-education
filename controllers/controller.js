@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const {
+  sequelize,
   User,
   UserProfile,
   Course,
@@ -63,12 +64,13 @@ class Controller {
 
   static async users(req, res) {
     try {
+      const { role } = req.session;
       let data = await User.findAll({
         include: UserProfile,
       });
 
       // res.send(data);
-      res.render("users", { data });
+      res.render("users", { data, role });
     } catch (error) {
       res.send(error);
     }
@@ -76,13 +78,15 @@ class Controller {
 
   static async userRegisterForm(req, res) {
     try {
-      res.render("userRegisters");
+      const { errors } = req.query;
+      res.render("userRegisters", { errors });
     } catch (error) {
       res.send(error);
     }
   }
 
   static async userRegister(req, res) {
+    const t = await sequelize.transaction();
     try {
       const {
         firstName,
@@ -94,41 +98,60 @@ class Controller {
         password,
       } = req.body;
 
-      let user = await User.create({
-        email,
-        password,
-        role,
-      });
+      const user = await User.create(
+        {
+          email,
+          password,
+          role,
+        },
+        { transaction: t },
+      );
 
-      await UserProfile.create({
-        firstName,
-        lastName,
-        birthOfDate,
-        phoneNumber,
-        UserId: user.id,
-      });
+      await UserProfile.create(
+        {
+          firstName,
+          lastName,
+          birthOfDate,
+          phoneNumber,
+          UserId: user.id,
+        },
+        { transaction: t },
+      );
 
+      await t.commit();
       res.redirect("/");
     } catch (error) {
-      res.send(error);
+      if (
+        error.name === "SequelizeValidationError" ||
+        error.name === "SequelizeUniqueConstraintError"
+      ) {
+        let errors = error.errors.map((el) => el.message);
+        return res.redirect(`/register?errors=${errors}`);
+      } else {
+        console.log(error);
+        res.send(error);
+      }
     }
   }
 
   static async editUsersForm(req, res) {
     try {
       const { userId } = req.params;
+      const { errors } = req.query;
+      const { role } = req.session;
 
       let data = await User.findByPk(userId, {
         include: UserProfile,
       });
 
-      res.render("editUsers", { data });
+      res.render("editUsers", { data, errors, role });
     } catch (error) {
       res.send(error);
     }
   }
 
   static async editUsers(req, res) {
+    const t = await sequelize.transaction();
     try {
       const { userId } = req.params;
       const {
@@ -141,30 +164,44 @@ class Controller {
         password,
       } = req.body;
 
-      let user = await User.findByPk(userId);
+      let user = await User.findByPk(userId, { transaction: t });
 
-      await user.update({
-        email,
-        password,
-        role,
-      });
+      let userUpdate = { email, role };
+
+      if (password && password.trim() !== "") {
+        userUpdate.password = password; // Model hook will handle hashing
+      }
+
+      await user.update(userUpdate, { transaction: t });
 
       let userProfile = await UserProfile.findOne({
         where: {
-          UserId: id,
+          UserId: userId, // typo fixed from previous: should be userId not id
         },
+        transaction: t,
       });
 
-      await userProfile.update({
-        firstName,
-        lastName,
-        birthOfDate,
-        phoneNumber,
-      });
+      await userProfile.update(
+        {
+          firstName,
+          lastName,
+          birthOfDate,
+          phoneNumber,
+        },
+        { transaction: t },
+      );
 
+      await t.commit();
       res.redirect("/users");
     } catch (error) {
-      res.send(error);
+      const { userId } = req.params;
+      if (error.name === "SequelizeValidationError") {
+        let errors = error.errors.map((el) => el.message);
+        return res.redirect(`/users/${userId}/edit?errors=${errors}`);
+      } else {
+        console.log(error);
+        res.send(error);
+      }
     }
   }
 
@@ -184,7 +221,7 @@ class Controller {
 
   static async home(req, res) {
     try {
-      const { notif, userId } = req.session;
+      const { notif, userId, role } = req.session;
       const { search } = req.query;
 
       req.session.notif = null;
@@ -237,6 +274,13 @@ class Controller {
       // Kolom Search
       let data = await Course.search(search);
 
+      //Cek Learn Course
+      const learnCourseIds = await CourseUser.findAll({
+        where: { UserId: req.session.userId },
+        attributes: ["CourseId"],
+      });
+      const learnIds = learnCourseIds.map((el) => el.CourseId);
+
       res.render("home", {
         data,
         formattedCurrency,
@@ -244,6 +288,8 @@ class Controller {
         search,
         chartLabels,
         chartData,
+        role,
+        learnIds,
       });
     } catch (error) {
       res.send(error);
@@ -253,8 +299,9 @@ class Controller {
   static async addCoursesForm(req, res) {
     try {
       const { errors } = req.query;
+      const { role } = req.session;
 
-      res.render("addCourses", { errors });
+      res.render("addCourses", { errors, role });
     } catch (error) {
       res.send(error);
     }
@@ -282,9 +329,11 @@ class Controller {
     try {
       const { courseId } = req.params;
       const { errors } = req.query;
+      const { role } = req.session;
+
       let data = await Course.findByPk(courseId);
 
-      res.render("editCourses", { data, errors });
+      res.render("editCourses", { data, errors, role });
     } catch (error) {
       res.send(error);
     }
@@ -321,6 +370,7 @@ class Controller {
   static async courseMaterials(req, res) {
     try {
       const { courseId } = req.params;
+      const { role } = req.session;
 
       let data = await Material.findAll({
         include: Course,
@@ -333,7 +383,7 @@ class Controller {
 
       // console.log(data);
 
-      res.render("courseMaterials", { data, courseData });
+      res.render("courseMaterials", { data, courseData, role });
     } catch (error) {
       res.send(error);
     }
@@ -343,10 +393,6 @@ class Controller {
     try {
       const { courseId } = req.params;
       const { userId } = req.session;
-
-      if (!userId) {
-        return res.redirect("/?error=Please login first");
-      }
 
       await CourseUser.findOrCreate({
         where: {
@@ -365,10 +411,11 @@ class Controller {
   static async addMaterialsForm(req, res) {
     try {
       const { courseId } = req.params;
-      let data = await Material.findByPk(courseId);
+      const { role } = req.session;
+      let data = await Course.findByPk(courseId);
       // console.log(data);
 
-      res.render("addMaterials", { data });
+      res.render("addMaterials", { data, role });
     } catch (error) {
       res.send(error);
     }
@@ -395,10 +442,12 @@ class Controller {
   static async editMaterialsForm(req, res) {
     try {
       const { materialId } = req.params;
+      const { role } = req.session;
+
       let data = await Material.findByPk(materialId);
       // console.log(data);
 
-      res.render("editMaterials", { data });
+      res.render("editMaterials", { data, role });
     } catch (error) {
       res.send(error);
     }
