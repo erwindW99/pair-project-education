@@ -5,7 +5,7 @@ const coursesRoutes = require("./courses");
 const Controller = require("../controllers/controller");
 
 //Halaman Login
-router.get("/", Controller.login);
+router.get("/", Controller.loginForm);
 
 //Halaman Home
 router.get("/home", Controller.home);
