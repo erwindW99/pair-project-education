@@ -1,0 +1,101 @@
+/* untuk REGISTER */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Background Education */
+body {
+  min-height: 100vh;
+  background: 
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1')
+    no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+/* Card Container */
+form {
+  width: 420px;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+/* Title */
+h1 {
+  position: absolute;
+  top: 40px;
+  text-align: center;
+  width: 100%;
+  color: white;
+  font-weight: 600;
+}
+
+/* Label */
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Input & Select */
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+/* Focus Effect */
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4e73df;
+  box-shadow: 0 0 8px rgba(78,115,223,0.3);
+}
+
+/* Button */
+button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
